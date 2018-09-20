@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Install Redis on your Raspberry Pi</title>
+<meta name="description" content="Caching? Whatever that suppose to mean, this is how to install it on your RaspberryPi." />
+<script src="/cdn-cgi/apps/head/vdxccnojLK-f5EjnVLIDrkhPemo.js"></script><link rel="canonical" href="https://habilisbest.com/install-redis-on-your-raspberrypi" />
+<meta name="robots" content="nofollow" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="Caching? Whatever that suppose to mean, this is how to install it on your RaspberryPi." />
+<meta name="twitter:title" content="Install Redis on your Raspberry Pi" />
+<meta name="twitter:site" content="@Habilyaa" />
+<meta name="twitter:image" content="https://habilisbest.com/uploads/rpi-redis/1.jpeg" />
+
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://habilisbest.com/uploads/rpi-redis/1.jpeg" />
+<meta property="og:image:alt" content="Install Redis on your Raspberry Pi" />
+<meta property="og:image:secure_url" content="https://habilisbest.com/uploads/rpi-redis/1.jpeg" />
+<meta property="og:title" content="Install Redis on your Raspberry Pi" />
+<meta property="og:description" content="Caching? Whatever that suppose to mean, this is how to install it on your RaspberryPi." />
+<meta property="og:url" content="https://habilisbest.com/install-redis-on-your-raspberrypi" />
+<meta property="og:site_name" content="HabilisBest blog about Programming Arduino and Raspberry Pi" />
+<meta property="fb:app_id" content="310300836055147" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content="HabilisBest blog about Programming Arduino and Raspberry Pi" />
+<meta name="theme-color" content="#5fc9b2" />
+
+<meta property="article:tag" content="Linux" />
+<meta property="article:tag" content="Server" />
+<meta property="article:tag" content="Management" />
+<meta property="article:tag" content="Tinkering" />
+<meta property="article:tag" content="Raspberry Pi" />
+<meta property="article:section" content="Blog" />
+<meta property="article:published_time" content="2017-01-05T18:20:00-05:00" />
+<meta property="article:modified_time" content="2018-08-09T07:37:00-04:00" />
+<meta property="og:updated_time" content="2018-08-09T07:37:00-04:00" />
+<meta name="csrf-token" content="1F5Ewfhxp9yVl5OwzgC7p5TIBh2JY1BebNfBFWGB" />
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="stylesheet" charset="utf-8" href="/css/home.css?id=49dfa6dc189d134c0bff" crossorigin="anonymous">
+
+<link rel="apple-touch-icon" href="/images/touch-icons/apple-touch-icon-180x180.png">
+<link rel="manifest" href="/manifest.webmanifest">
+
+
+<script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-76176758-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+        window.Language = 'en';
+        window.Laravel = {"csrfToken":"1F5Ewfhxp9yVl5OwzgC7p5TIBh2JY1BebNfBFWGB"}    </script>
+</head>
+<body>
+<div id="app">
+<nav class="navbar navbar-expand-lg navbar-dark">
+<div class="container">
+<div class="hbbrand">
+<a href="https://habilisbest.com">
+<img alt="Logo" src="https://habilisbest.com/images/logo32.png">
+<span class="text-next-to-logo">Blog</span>
+</a>
+</div>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+<i class="fas fa-bars"></i>
+</button>
+<div class="collapse navbar-collapse" id="app-navbar-collapse">
+
+<ul class="navbar-nav mr-auto">
+<li class="nav-item"><a class="nav-link" href="https://habilisbest.com">Articles</a></li>
+<li class="nav-item"><a class="nav-link" href="https://habilisbest.com/category">Categories</a></li>
+<li class="nav-item"><a class="nav-link" href="https://habilisbest.com/discussion">Discussions</a></li>
+<li class="nav-item"><a class="nav-link" href="https://habilisbest.com/link">Links</a></li>
+<li class="nav-item"><a class="nav-link" href="https://habilisbest.com/about">About me</a></li>
+</ul>
+
+<ul class="navbar-nav navbar-right">
+
+<form class="form-inline my-2 my-lg-0 search" role="search" method="get" action="https://habilisbest.com/search">
+<input class="form-control mr-sm-2" type="search" name="q" placeholder="Search" required>
+</form>
+
+<li class="nav-item"><a class="nav-link" href="https://habilisbest.com/login">Log In</a></li>
+<li class="nav-item"><a class="nav-link" href="https://habilisbest.com/register">Register</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<div class="main">
+<div class="jumbotron jumbotron-fluid">
+<div class="container">
+<div class="row text-center">
+<div class="col-md-10 offset-md-1">
+<h1>Install Redis on your Raspberry Pi</h1>
+<h6>Caching? Whatever that suppose to mean, this is how to install it on your RaspberryPi.</h6>
+<div class="header">
+<i class="fa fa-bookmark"></i>
+<a href="https://habilisbest.com/category/Raspberry%20Pi">Raspberry Pi</a>,
+<i class="fas fa-user"></i>
+<a href="https://habilisbest.com/user/Habilis">Habilis</a>,
+<i class="fas fa-clock"></i>2017-01-05 18:00,
+<br>
+<i class="fas fa-tags"></i>
+<a href="https://habilisbest.com/tag/Linux">Linux</a>
+, <a href="https://habilisbest.com/tag/Server">Server</a>
+, <a href="https://habilisbest.com/tag/Management">Management</a>
+, <a href="https://habilisbest.com/tag/Tinkering">Tinkering</a>
+, <a href="https://habilisbest.com/tag/Raspberry%20Pi">Raspberry Pi</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="article container">
+<div class="row">
+<div class="col-md-8 offset-md-2">
+<parse content="![Redis on Raspberry Pi](https://habilisbest.com/uploads/rpi-redis/1.jpeg)
+
+# Installing Redis on a Raspberry Pi for caching
+
+If you want to configure caching to speed up web apps you may want to run on your Raspberry Pi. Or, it could be that some web apps, even require caching for their stable operation.
+
+Whatever the case may be, caching could be a life saver, when installed and configured properly.
+
+In this article, I will show how I install Redis on my Raspberry Pis.
+First of all, we need to download the latest stable release of Redis. 
+
+Prepare to download Redis source and build it on your Raspberry Pi. It may sound spooky complicated, but it&#039;s just as simple as running 3 Linux bash commands.
+
+First, go to your user&#039;s home directory
+
+`cd ~`
+
+To download Redis, the following link doesn&#039;t take a version as a parameter. Therefore, just copy and paste the command.
+
+`wget http://download.redis.io/redis-stable.tar.gz`
+
+Unarchive the package you&#039;ve just downloaded.
+
+`tar xzf redis*`
+
+Go inside the Redis folder
+
+`cd redis*`
+
+Now let&#039;s build Redis from sources on your Raspberry Pi with following commands.
+```
+sudo make
+make test
+sudo make install PREFIX=/usr
+```
+
+
+At this point, you&#039;ve compiled Redis
+Now, let&#039;s install it to a folder accessible to all users
+Create a directory
+
+`sudo mkdir /etc/redis`
+
+Install Compiled Redis there
+
+`sudo cp redis.conf /etc/redis/`
+
+It is time to clean-up
+
+`cd ..`
+
+Delete archive and folder with this command.
+
+`sudo rm -Rf redis*`
+
+Create a user without Home directory and without the possibility to login into your system. As you are going to run Redis as this user.
+
+`sudo adduser --system --group --disabled-login redis --no-create-home --shell /bin/nologin --quiet`
+
+
+Check the shadow file to see if Redis user were created.
+
+`cat /etc/passwd | grep redis`
+
+Edit the Redis configuration file to setup caching.
+
+`sudo nano /etc/redis/redis.conf`
+
+Use nano&#039;s CTRL+W function to search for the following entries.
+some are already set. But, there are still few values to set. For example, 
+* **daemonize yes** to run Redis as a Deamon. 
+* **stop-writes-on-bgsave-error no**, Redis stops on failure and requires a manual restart. Using this setting Redis will not stop on failure.
+* **maxmemory 70M**, RAM is limited on a RaspberryPi, so 70 Mb is enough for most of my needs. If you need more memory, adjust this setting later.
+
+```
+bind 127.0.0.1
+port 6379
+daemonize yes
+stop-writes-on-bgsave-error no
+rdbcompression yes
+maxmemory 50M
+maxmemory-policy allkeys-lru
+```
+
+At this point, you can create a script to run your Redis server.
+
+Create a directory, this script will be executed from.
+
+`sudo mkdir -p /var/run/redis`
+
+Make Redis user the owner of this directory.
+
+`sudo chown -R redis /var/run/redis`
+
+Create the script.
+
+`sudo nano /etc/init.d/redis-server`
+
+Paste the following.
+
+```
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides: redis-server
+# Required-Start: $syslog $remote_fs
+# Required-Stop: $syslog $remote_fs
+# Should-Start: $local_fs
+# Should-Stop: $local_fs
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: redis-server - Persistent key-value db
+# Description: redis-server - Persistent key-value db
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/bin/redis-server
+DAEMON_ARGS=/etc/redis/redis.conf
+NAME=redis-server
+DESC=redis-server
+
+RUNDIR=/var/run/redis
+PIDFILE=$RUNDIR/redis-server.pid
+
+test -x $DAEMON || exit 0
+
+if [ -r /etc/default/$NAME ]
+then
+. /etc/default/$NAME
+fi
+
+. /lib/lsb/init-functions
+
+set -e
+
+case &quot;$1&quot; in
+  start)
+echo -n &quot;Starting $DESC: &quot;
+mkdir -p $RUNDIR
+touch $PIDFILE
+chown redis:redis $RUNDIR $PIDFILE
+chmod 755 $RUNDIR
+
+if [ -n &quot;$ULIMIT&quot; ]
+then
+ulimit -n $ULIMIT
+fi
+
+if start-stop-daemon --start --quiet --umask 007 --pidfile $PIDFILE --chuid redis:redis --exec $DAEMON -- $DAEMON_ARGS
+then
+echo &quot;$NAME.&quot;
+else
+echo &quot;failed&quot;
+fi
+;;
+  stop)
+echo -n &quot;Stopping $DESC: &quot;
+if start-stop-daemon --stop --retry forever/TERM/1 --quiet --oknodo --pidfile $PIDFILE --exec $DAEMON
+then
+echo &quot;$NAME.&quot;
+else
+echo &quot;failed&quot;
+fi
+rm -f $PIDFILE
+sleep 1
+;;
+
+  restart|force-reload)
+${0} stop
+${0} start
+;;
+
+  status)
+status_of_proc -p ${PIDFILE} ${DAEMON} ${NAME}
+;;
+
+  *)
+echo &quot;Usage: /etc/init.d/$NAME {start|stop|restart|force-reload|status}&quot; &gt;&amp;2
+exit 1
+;;
+esac
+
+exit 0
+```
+
+Make this script executable.
+
+`sudo chmod +x /etc/init.d/redis-server`
+
+Add this script to be run as a command
+
+`sudo update-rc.d redis-server defaults`
+
+If everything set correctly, the Redis server could now be manipulated through this command
+
+`sudo service redis-server restart`
+
+Now you may see the results of your actions
+Check the 
+
+`redis-server -v`
+
+Make sure it listening on **127.0.0.1**
+
+`netstat -antp`
+
+Make sure the Redis process is running as the **redis** user.
+
+`ps aux | grep redis`
+
+
+You may now enjoy your Redis caching server installation on your Raspberry Pi.
+
+# (Optional) Installing PHPRedis
+
+If you are planning on using Redis as a cache driver for your web app running on PHP, you may want to install PHPRedis as well. Otherwise, this is completely optional.
+
+First, Install few needed packages 
+
+`sudo apt-get install libtool php7.0-dev` 
+
+or php-dev, if you are using php 5.
+Go to your user’s home directory.
+
+`cd ~`
+
+Clone (Download) from this repository,
+
+`git clone https://github.com/phpredis/phpredis.git`
+
+If this step doesn’t work, please make sure you have GIT installed 
+
+`sudo apt-get install git`
+
+Go to the downloaded directory.
+
+`cd phpredis`
+
+Get the branch for your PHP version.
+In my case, it is php 7.
+
+`git checkout php7`
+
+`git pull`
+
+Now, phpize the files.
+
+`phpize`
+
+And start building it from sources.
+
+`./configure`
+
+`make clean`
+
+`make`
+
+`sudo make install`
+
+After the installation is over, clean-up the user’s home directory.
+
+`cd ..`
+
+`rm -rf phpredis`
+
+The following commands easier executed with root user.
+
+`su`
+
+Add few extensions
+
+`echo &quot;extension=redis.so&quot; &gt; /etc/php/7.0/mods-available/redis.ini`
+
+`ln -sf /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/fpm/conf.d/20-redis.ini`
+
+`ln -sf /etc/php/7.0/mods-available/redis.ini /etc/php/7.0/cli/conf.d/20-redis.ini`
+
+Exit from root user.
+
+`exit`
+
+Restart services
+
+`service php7.0-fpm restart`
+
+`service nginx restart`
+
+Now, you may enjoy your installation of PHPRedis."></parse>
+<div class="publishing alert alert-dismissible alert-info">
+<button type="button" class="close" data-dismiss="alert">×</button>
+This article is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+</div>
+<div id="share"></div>
+</div>
+</div>
+</div>
+<comment title="Comments" commentable-type="articles" commentable-id="6"></comment>
+</div>
+<footer id="footer" class="footer">
+<div class="copy-right text-center">
+<a href="https://habilisbest.com">
+HabilisBest.com
+</a>
+&nbsp;
+<span>&copy;&nbsp;&nbsp;2013-2018</span>
+</div>
+</footer> </div>
+
+<script defer type="text/javascript" src="/js/home.js?id=ac194151e1e00098b6be" crossorigin="anonymous"></script>
+<script type="text/javascript">
+        window.onload = function () {
+            $(function () {
+                $("[data-toggle='tooltip']").tooltip();
+            });
+        }
+    </script>
+<script type="text/javascript">
+        window.onload = function () {
+            hljs.initHighlightingOnLoad();
+            
+            $("#share").jsSocials({
+                showCount: false,
+                showLabel: true,
+                shares: [
+                    { share: "facebook", logo: "fab fa-facebook-f", label: "Share" },
+                    { share: "twitter", logo: "fab fa-twitter" },
+                    { share: "googleplus", logo: "fab fa-google-plus-g" },
+                    { share: "linkedin", logo: "fab fa-linkedin-in" },
+                    { share: "pinterest", logo: "fab fa-pinterest", label: "Pin this" }
+                ]
+            });
+        }
+    </script>
+<script type="application/ld+json">
+        { 
+            "@context": "http://schema.org", 
+            "@type": "Article",
+            "inLanguage": "en",
+            "headline": "Install Redis on your Raspberry Pi",
+            "alternativeHeadline": "Caching? Whatever that suppose to mean, this is how to install it on your RaspberryPi.",
+            "image": "https://habilisbest.com/uploads/rpi-redis/1.jpeg",
+            "author": { 
+                "@type": "Person", 
+                "name": "Habilis"
+            }, 
+            "editor": "Habilis", 
+            "genre": "Raspberry Pi", 
+            "publisher": { 
+                "@type": "Organization", 
+                "name": "HabilisBest blog about Programming Arduino and Raspberry Pi",
+                "url": "https://habilisbest.com",
+                "logo" : {
+                    "@type": "ImageObject",
+                    "url": "https://habilisbest.com/images/logo32.png"
+                }
+            },
+            "url": "https://habilisbest.com",
+            "datePublished": "2017-01-05T18:20:00-05:00",
+            "dateCreated": "2017-01-05T18:20:00-05:00",
+            "dateModified": "2018-08-09T07:37:00-04:00",
+            "description": "Caching? Whatever that suppose to mean, this is how to install it on your RaspberryPi.",
+            "mainEntityOfPage": { 
+                "@type": "WebPage", 
+                "@id": "https://habilisbest.com/install-redis-on-your-raspberrypi" 
+            }
+        }
+    </script>
+</body>
+</html>

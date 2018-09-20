@@ -1,0 +1,271 @@
+<!doctype html>
+<!--[if !IE]>
+	<html class="no-js non-ie" lang="en-US" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 7 ]>
+	<html class="no-js ie7" lang="en-US" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 8 ]>
+	<html class="no-js ie8" lang="en-US" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 9 ]>
+	<html class="no-js ie9" lang="en-US" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class=no-js lang=en-US prefix="og: http://ogp.me/ns#"> <!--<![endif]-->
+<head>
+<meta charset=UTF-8>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel=profile href="http://gmpg.org/xfn/11">
+<link rel=pingback href="https://www.shellhacks.com/xmlrpc.php">
+<title>Redis: SET/GET Key:Value - Redis-CLI - ShellHacks</title>
+<!-- Social Warfare v3.3.2 https://warfareplugins.com --><style>@font-face{font-family:"sw-icon-font";src:url(https://www.shellhacks.com/wp-content/plugins/social-warfare/assets/fonts/sw-icon-font.eot?ver=3.3.2);src:url(https://www.shellhacks.com/wp-content/plugins/social-warfare/assets/fonts/sw-icon-font.eot?ver=3.3.2#iefix) format("embedded-opentype") , url(https://www.shellhacks.com/wp-content/plugins/social-warfare/assets/fonts/sw-icon-font.woff?ver=3.3.2) format("woff") , url(https://www.shellhacks.com/wp-content/plugins/social-warfare/assets/fonts/sw-icon-font.ttf?ver=3.3.2) format("truetype") , url(https://www.shellhacks.com/wp-content/plugins/social-warfare/assets/fonts/sw-icon-font.svg?ver=3.3.2#1445203416) format("svg");font-weight:normal;font-style:normal}</style>
+<!-- Social Warfare v3.3.2 https://warfareplugins.com -->
+<!-- This site is optimized with the Yoast SEO plugin v8.2 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name=description content="How to SET a value to a key and how to GET a value associated to a key from the Redis command line (redis-cli)."/>
+<link rel=canonical href="https://www.shellhacks.com/redis-set-get-key-value-redis-cli/"/>
+<meta property=og:locale content=en_US />
+<meta property=og:type content=article />
+<meta property=og:title content="Redis: SET/GET Key:Value - Redis-CLI - ShellHacks"/>
+<meta property=og:description content="How to SET a value to a key and how to GET a value associated to a key from the Redis command line (redis-cli)."/>
+<meta property=og:url content="https://www.shellhacks.com/redis-set-get-key-value-redis-cli/"/>
+<meta property=og:site_name content=ShellHacks />
+<meta property=article:tag content=redis />
+<meta property=article:section content=Blog />
+<meta property=article:published_time content="2018-05-23T17:32:30+00:00"/>
+<meta name=twitter:card content=summary />
+<meta name=twitter:description content="How to SET a value to a key and how to GET a value associated to a key from the Redis command line (redis-cli)."/>
+<meta name=twitter:title content="Redis: SET/GET Key:Value - Redis-CLI - ShellHacks"/>
+<meta name=twitter:site content="@shellhacks"/>
+<meta name=twitter:creator content="@shellhacks"/>
+<!-- / Yoast SEO plugin. -->
+<link rel=dns-prefetch href='//fonts.googleapis.com'/>
+<link rel=dns-prefetch href='//s.w.org'/>
+<link rel=alternate type="application/rss+xml" title="ShellHacks &raquo; Feed" href="https://www.shellhacks.com/feed/"/>
+<link rel=alternate type="application/rss+xml" title="ShellHacks &raquo; Comments Feed" href="https://www.shellhacks.com/comments/feed/"/>
+<link rel=alternate type="application/rss+xml" title="ShellHacks &raquo; Redis: SET/GET Key:Value &#8211; Redis-CLI Comments Feed" href="https://www.shellhacks.com/redis-set-get-key-value-redis-cli/feed/"/>
+<style type="text/css">img.wp-smiley,img.emoji{display:inline!important;border:none!important;box-shadow:none!important;height:1em!important;width:1em!important;margin:0 .07em!important;vertical-align:-.1em!important;background:none!important;padding:0!important}</style><link rel=stylesheet id=cookie-notice-front-css href='https://www.shellhacks.com/wp-content/plugins/cookie-notice/css/A.front.min.css,qver=4.9.8.pagespeed.cf.xAvvF2UYtC.css' type='text/css' media=all /><link rel=stylesheet id=social_warfare-css href='https://www.shellhacks.com/wp-content/plugins/social-warfare/assets/css/style.min.css,qver=3.3.2.pagespeed.ce.ISKWIavUTC.css' type='text/css' media=all /><link rel=stylesheet id=activello-bootstrap-css href='https://www.shellhacks.com/wp-content/themes/activello/assets/css/A.bootstrap.min.css,qver=4.9.8.pagespeed.cf.ANNqluioKf.css' type='text/css' media=all /><link rel=stylesheet id=activello-icons-css href='https://www.shellhacks.com/wp-content/themes/activello/assets/css/A.font-awesome.min.css,qver=4.9.8.pagespeed.cf.YaV9IcR0kC.css' type='text/css' media=all /><link rel=stylesheet id=activello-fonts-css href='//fonts.googleapis.com/css?family=Lora%3A400%2C400italic%2C700%2C700italic%7CMontserrat%3A400%2C700%7CMaven+Pro%3A400%2C700&#038;ver=4.9.8' type='text/css' media=all /><link rel=stylesheet id=activello-style-css href='https://www.shellhacks.com/wp-content/themes/activello_mod/A.style.css,qver=4.9.8.pagespeed.cf.vjAcdmrjoe.css' type='text/css' media=all /><style type="text/css">.qtranxs_flag_en{background-image:url(https://www.shellhacks.com/wp-content/plugins/qtranslate-x/flags/gb.png.pagespeed.ce.w314CMjBd6.png);background-repeat:no-repeat}.qtranxs_flag_ru{background-image:url(https://www.shellhacks.com/wp-content/plugins/qtranslate-x/flags/ru.png.pagespeed.ce.b3qXQnZPvO.png);background-repeat:no-repeat}</style><style type="text/css"></style><style type="text/css">#social li{display:inline-block}#social li,#social ul{border:0!important;list-style:none;padding-left:0;text-align:center}#social li a[href*="twitter.com"] .fa:before,.fa-twitter:before{content:"\f099"}#social li a[href*="facebook.com"] .fa:before,.fa-facebook-f:before,.fa-facebook:before{content:"\f09a"}#social li a[href*="github.com"] .fa:before,.fa-github:before{content:"\f09b"}#social li a[href*="/feed"] .fa:before,.fa-rss:before{content:"\f09e"}#social li a[href*="pinterest.com"] .fa:before,.fa-pinterest:before{content:"\f0d2"}#social li a[href*="plus.google.com"] .fa:before,.fa-google-plus:before{content:"\f0d5"}#social li a[href*="linkedin.com"] .fa:before,.fa-linkedin:before{content:"\f0e1"}#social li a[href*="youtube.com"] .fa:before,.fa-youtube:before{content:"\f167"}#social li a[href*="instagram.com"] .fa:before,.fa-instagram:before{content:"\f16d"}#social li a[href*="flickr.com"] .fa:before,.fa-flickr:before{content:"\f16e"}#social li a[href*="tumblr.com"] .fa:before,.fa-tumblr:before{content:"\f173"}#social li a[href*="dribbble.com"] .fa:before,.fa-dribbble:before{content:"\f17d"}#social li a[href*="skype.com"] .fa:before,.fa-skype:before{content:"\f17e"}#social li a[href*="foursquare.com"] .fa:before,.fa-foursquare:before{content:"\f180"}#social li a[href*="vimeo.com"] .fa:before,.fa-vimeo-square:before{content:"\f194"}#social li a[href*="weheartit.com"] .fa:before,.fa-heart:before{content:"\f004"}#social li a[href*="spotify.com"] .fa:before,.fa-spotify:before{content:"\f1bc"}#social li a[href*="soundcloud.com"] .fa:before,.fa-soundcloud:before{content:"\f1be"}</style><style>@media (max-width:500px){.top-blk-float-right{display:none}}@media (min-width:500px){.top-blk-float-right{width:336px;height:280px}}</style><style>.bottom-blk-float-left{width:336px;height:280px}</style><style>@media (min-width:500px){.bottom-blk-float-right{width:336px;height:280px}}@media (max-width:500px){.bottom-blk-float-right{display:none}}</style><style>@media (max-width:500px){.sidebar-blk-300-600-1{display:none}}</style><script type="text/javascript">window._wpemojiSettings={"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.shellhacks.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.8"}};!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);</script>
+<script type='text/javascript' src='https://www.shellhacks.com/wp-includes/js/jquery/jquery.js,qver=1.12.4.pagespeed.jm.pPCPAKkkss.js'></script>
+<script type='text/javascript' src='https://www.shellhacks.com/wp-includes/js/jquery/jquery-migrate.min.js,qver=1.4.1.pagespeed.jm.C2obERNcWh.js'></script>
+<script type='text/javascript'>var cnArgs={"ajaxurl":"https:\/\/www.shellhacks.com\/wp-admin\/admin-ajax.php","hideEffect":"fade","onScroll":"no","onScrollOffset":"100","cookieName":"cookie_notice_accepted","cookieValue":"true","cookieTime":"2592000","cookiePath":"\/","cookieDomain":"","redirection":"","cache":"","refuse":"no","revoke_cookies":"0","revoke_cookies_opt":"automatic","secure":"1"};</script>
+<script src="https://www.shellhacks.com/wp-content/plugins,_cookie-notice,_js,_front.min.js,qver==1.2.44+themes,_activello,_assets,_js,_vendor,_modernizr.min.js,qver==4.9.8+themes,_activello,_assets,_js,_vendor,_bootstrap.min.js,qver==4.9.8+themes,_activello,_assets,_js,_functions.min.js,qver==4.9.8.pagespeed.jc.urHbN5M75A.js"></script><script>eval(mod_pagespeed_e79Bxu6fmp);</script>
+<script>eval(mod_pagespeed_7egPHPZuos);</script>
+<script>eval(mod_pagespeed_4fFjx0q506);</script>
+<script>eval(mod_pagespeed_ARM7P3Gkel);</script>
+<link rel='https://api.w.org/' href='https://www.shellhacks.com/wp-json/'/>
+<link rel=EditURI type="application/rsd+xml" title=RSD href="https://www.shellhacks.com/xmlrpc.php?rsd"/>
+<link rel=wlwmanifest type="application/wlwmanifest+xml" href="https://www.shellhacks.com/wp-includes/wlwmanifest.xml"/>
+<meta name=generator content="WordPress 4.9.8"/>
+<link rel=shortlink href='https://www.shellhacks.com/?p=3559'/>
+<link rel=alternate type="application/json+oembed" href="https://www.shellhacks.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F"/>
+<link rel=alternate type="text/xml+oembed" href="https://www.shellhacks.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F&#038;format=xml"/>
+<link hreflang=en href="https://www.shellhacks.com/en/redis-set-get-key-value-redis-cli/" rel=alternate />
+<link hreflang=ru href="https://www.shellhacks.com/ru/redis-set-get-key-value-redis-cli/" rel=alternate />
+<link hreflang=x-default href="https://www.shellhacks.com/redis-set-get-key-value-redis-cli/" rel=alternate />
+<meta name=generator content="qTranslate-X 3.4.6.8"/>
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-91470100-1','auto');ga('send','pageview');</script>
+<link rel=icon href="https://www.shellhacks.com/wp-content/uploads/cropped-site-icon-1-32x32.png.pagespeed.ce.CTGL7Lfot4.png" sizes=32x32 />
+<link rel=icon href="https://www.shellhacks.com/wp-content/uploads/cropped-site-icon-1-192x192.png.pagespeed.ce.ykcnnJdAvW.png" sizes=192x192 />
+<link rel=apple-touch-icon-precomposed href="https://www.shellhacks.com/wp-content/uploads/cropped-site-icon-1-180x180.png.pagespeed.ce.CtcUxjdRL6.png"/>
+<meta name=msapplication-TileImage content="https://www.shellhacks.com/wp-content/uploads/cropped-site-icon-1-270x270.png"/>
+</head>
+<body class="post-template-default single single-post postid-3559 single-format-standard wp-custom-logo cookies-not-set has-sidebar-right">
+<div id=page class="hfeed site">
+<header id=masthead class=site-header role=banner>
+<nav class="navbar navbar-default" role=navigation>
+<div class=container>
+<div class=row>
+<div class="site-navigation-inner col-sm-12">
+<div class=navbar-header>
+<button type=button class="btn navbar-toggle" data-toggle=collapse data-target=.navbar-ex1-collapse>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+</div>
+<div class="collapse navbar-collapse navbar-ex1-collapse"><ul id=menu-primary-menu class="nav navbar-nav"><li id=menu-item-1093 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1093"><a title=Home href="/">Home</a></li>
+<li id=menu-item-3564 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3564"><a title=Privacy href="https://www.shellhacks.com/privacy/">Privacy</a></li>
+<li id=menu-item-3565 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3565"><a title=Contact href="https://www.shellhacks.com/contact/">Contact</a></li>
+</ul></div>
+<div class=nav-search><form action="https://www.shellhacks.com/" method=get><input type=text name=s value="" placeholder=Search><button type=submit class=header-search-icon name=submit id=searchsubmit value=Search><i class="fa fa-search"></i></button></form>
+</div>
+</div>
+</div>
+</div>
+</nav><!-- .site-navigation -->
+<div class=container>
+<div id=logo>
+<span class=site-name>
+<a class=navbar-brand href="https://www.shellhacks.com/" title=ShellHacks rel=home>ShellHacks</a>
+</span><!-- end of .site-name -->
+<div class=tagline>Linux Hacks and Guides</div>
+</div><!-- end of #logo -->
+<div id=line></div>
+</div>
+</header><!-- #masthead -->
+<div id=content class=site-content>
+<div class=top-section>
+</div>
+<div class="container main-content-area">
+<div class=cat-title>
+<ul class=post-categories>
+<li><a href="https://www.shellhacks.com/cat/blog/" rel="category tag">Blog</a></li></ul>	</div>
+<div class=row>
+<div class="main-content-inner col-sm-12 col-md-8 side-right">
+<div id=primary class=content-area>
+<main id=main class=site-main role=main>
+<article id=post-3559 class="post-3559 post type-post status-publish format-standard hentry category-blog tag-redis">
+<div class=blog-item-wrap>
+<div class=post-inner-content>
+<header class="entry-header page-header">
+<h1 class=entry-title>Redis: SET/GET Key:Value &#8211; Redis-CLI</h1>
+<div class=entry-meta>
+<span class=posted-on>Posted on <a href="https://www.shellhacks.com/redis-set-get-key-value-redis-cli/" rel=bookmark><time class="entry-date published" datetime="2018-05-23T17:32:30+00:00">Wednesday May 23rd, 2018</time></a></span>by <span class="author vcard"><a class="url fn n" href="https://www.shellhacks.com/author/admin/">admin</a></span>
+</div><!-- .entry-meta -->
+</header><!-- .entry-header -->
+<a href="https://www.shellhacks.com/redis-set-get-key-value-redis-cli/" title="Redis: SET/GET Key:Value &#8211; Redis-CLI">
+</a>
+<div class=entry-content>
+<!--Ad Injection:top--><div style="float: right; margin-bottom: -0.5em; margin-left: 1em; margin-top: 1.5em;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- top-blk-float-right -->
+<ins class="adsbygoogle top-blk-float-right" style=display:inline-block data-ad-client=ca-pub-9082572314087695 data-ad-slot=7626634163 data-ad-format=auto></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div><p>Redis is a key-value database (also known as a key-value store) that uses a simple key/value method to store data.</p>
+<p>Strings are the simplest data type in Redis and are simple key/value entries.</p>
+<p>To save or fetch string data there are Redis <code>SET</code> and <code>GET</code> commands.</p>
+<p>Redis <code>SET</code> command creates a key and assigns it some value (if the key already exists it just updates the value).</p>
+<p>Redis <code>GET</code> command returns a value assigned to a key.<span id=more-3559></span></p>
+<p class=note-lnk><strong>Cool Tip:</strong> List all keys from the all databases in Redis! <a href="/redis-get-all-keys-redis-cli/">Read more →</a></p>
+<h2>Redis: SET/GET Key:Value</h2>
+<p>Set a <code>key</code> and assign it a <code>value</code>:</p>
+<pre>$ redis-cli SET &lt;key&gt; &lt;value&gt;</pre>
+<p>Get a value associated to a <code>key</code>:</p>
+<pre>$ redis-cli GET <code>&lt;key&gt;</code></pre>
+<!--Ad Injection:bottom--><div style="float: left; margin: 20px auto auto;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- bottom-blk-float-left -->
+<ins class="adsbygoogle bottom-blk-float-left" style=display:inline-block data-ad-client=ca-pub-9082572314087695 data-ad-slot=2278104566 data-ad-format=auto></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div>
+<div style="float: right; margin: 20px auto auto;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- bottom-blk-float-right -->
+<ins class="adsbygoogle bottom-blk-float-right" style=display:inline-block data-ad-client=ca-pub-9082572314087695 data-ad-slot=5231570966 data-ad-format=auto></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div><div class="swp_social_panel swp_horizontal_panel  swp_flat_fresh  swp_default_full_color swp_individual_full_color swp_other_full_color  scale-100  scale-" data-min-width=1100 " data-float-color="#ffffff" data-float=bottom data-float-mobile="" style=""><div class="nc_tweetContainer swp_facebook" data-network=facebook><a rel="nofollow noreferrer noopener" target=_blank href="https://www.facebook.com/share.php?u=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F" data-link="https://www.facebook.com/share.php?u=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F" class=nc_tweet><span class="swp_count swp_hide"><span class=iconFiller><span class=spaceManWilly><i class="sw swp_facebook_icon"></i><span class=swp_share>Share</span></span></span></span></a></div><div class="nc_tweetContainer swp_twitter" data-network=twitter><a rel="nofollow noreferrer noopener" target=_blank href="https://twitter.com/intent/tweet?text=Redis%3A+SET%2FGET+Key%3AValue+-+Redis-CLI&url=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F" data-link="https://twitter.com/intent/tweet?text=Redis%3A+SET%2FGET+Key%3AValue+-+Redis-CLI&url=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F" class=nc_tweet><span class="swp_count swp_hide"><span class=iconFiller><span class=spaceManWilly><i class="sw swp_twitter_icon"></i><span class=swp_share>Tweet</span></span></span></span></a></div><div class="nc_tweetContainer swp_linkedin" data-network=linkedin><a rel="nofollow noreferrer noopener" target=_blank href="https://www.linkedin.com/cws/share?url=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F" data-link="https://www.linkedin.com/cws/share?url=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F" class=nc_tweet><span class="swp_count swp_hide"><span class=iconFiller><span class=spaceManWilly><i class="sw swp_linkedin_icon"></i><span class=swp_share>Share</span></span></span></span></a></div><div class="nc_tweetContainer swp_google_plus" data-network=google_plus><a rel="nofollow noreferrer noopener" target=_blank href="https://plus.google.com/share?url=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F" data-link="https://plus.google.com/share?url=https%3A%2F%2Fwww.shellhacks.com%2Fredis-set-get-key-value-redis-cli%2F" class=nc_tweet><span class="swp_count swp_hide"><span class=iconFiller><span class=spaceManWilly><i class="sw swp_google_plus_icon"></i><span class=swp_share>+1</span></span></span></span></a></div><div class="nc_tweetContainer swp_pinterest" data-network=pinterest><a rel="nofollow noreferrer noopener" class="nc_tweet noPop" onClick="var e=document.createElement('script');
+						   e.setAttribute('type','text/javascript');
+						   e.setAttribute('charset','UTF-8');
+						   e.setAttribute('src','//assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);
+						   document.body.appendChild(e);
+						"><span class="swp_count swp_hide"><span class=iconFiller><span class=spaceManWilly><i class="sw swp_pinterest_icon"></i><span class=swp_share>Pin</span></span></span></span></a></div></div><div class=swp-content-locator></div>
+</div><!-- .entry-content -->
+<div class=entry-footer>
+<span class=comments-link><a href="https://www.shellhacks.com/redis-set-get-key-value-redis-cli/#respond">No comments yet</a></span>
+<!-- tags -->
+<div class=tagcloud>
+<a href="https://www.shellhacks.com/tag/redis/">redis</a>
+</div>
+<!-- end tags -->
+</div><!-- .entry-footer -->
+</div>
+</div>
+</article><!-- #post-## -->
+<div id=comments class=comments-area>
+<div id=respond class=comment-respond>
+<h3 id=reply-title class=comment-reply-title>Leave a Reply <small><a rel=nofollow id=cancel-comment-reply-link href="/redis-set-get-key-value-redis-cli/#respond" style="display:none;">Cancel reply</a></small></h3>	<form action="https://www.shellhacks.com/wp-comments-post.php" method=post id=commentform class=comment-form novalidate>
+<textarea id=comment name=comment cols=45 rows=8 aria-required=true placeholder=Comment></textarea><div class=row><div class=col-sm-4><input id=author name=author type=text value="" size=30 aria-required=true placeholder=Name /></div>
+<div class=col-sm-4><input id=email name=email type=text value="" size=30 aria-required=true placeholder=Email /></div>
+<p class=form-submit><input name=submit type=submit id=submit class=submit value="Post Reply"/> <input type=hidden name=comment_post_ID value=3559 id=comment_post_ID />
+<input type=hidden name=comment_parent id=comment_parent value=0 />
+</p><p style="display: none;"><input type=hidden id=akismet_comment_nonce name=akismet_comment_nonce value=e8703d3b85 /></p><p style="display: none;"><input type=hidden id=ak_js name=ak_js value=240 /></p>	</form>
+</div><!-- #respond -->
+<p class=akismet_comment_form_privacy_notice>This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/" target=_blank rel="nofollow noopener">Learn how your comment data is processed</a>.</p>
+</div><!-- #comments -->
+<nav class="navigation post-navigation" role=navigation>
+<h1 class=screen-reader-text>Post navigation</h1>
+<div class=nav-links>
+<div class=nav-previous><a href="https://www.shellhacks.com/redis-delete-all-keys-redis-cli/" rel=prev><i class="fa fa-chevron-left"></i> Redis: Delete All Keys &#8211; Redis-CLI</a></div><div class=nav-next><a href="https://www.shellhacks.com/curl-set-user-agent/" rel=next>cURL: Set User-Agent <i class="fa fa-chevron-right"></i></a></div>	</div><!-- .nav-links -->
+</nav><!-- .navigation -->
+</main><!-- #main -->
+</div><!-- #primary -->
+</div>
+<div id=secondary class="widget-area col-sm-12 col-md-4" role=complementary>
+<div class=inner>
+<aside id=adinj-7 class="widget adinjwidget"><!--Ad Injection:widget_7--><div style="text-align: left;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sidebar-blk-300-600-1 -->
+<ins class="adsbygoogle sidebar-blk-300-600-1" style="display:inline-block;width:300px;height:600px" data-ad-client=ca-pub-9082572314087695 data-ad-slot=5401208963></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div></aside><aside id=tag_cloud-4 class="widget widget_tag_cloud"><h3 class=widget-title>Tags</h3><div class=tagcloud><a href="https://www.shellhacks.com/tag/access-control/" class="tag-cloud-link tag-link-129 tag-link-position-1" style="font-size: 12.106666666667pt;" aria-label="access-control (4 items)">access-control</a>
+<a href="https://www.shellhacks.com/tag/aircrack-ng/" class="tag-cloud-link tag-link-66 tag-link-position-2" style="font-size: 8pt;" aria-label="aircrack-ng (2 items)">aircrack-ng</a>
+<a href="https://www.shellhacks.com/tag/anonymity/" class="tag-cloud-link tag-link-52 tag-link-position-3" style="font-size: 16.773333333333pt;" aria-label="anonymity (8 items)">anonymity</a>
+<a href="https://www.shellhacks.com/tag/apache/" class="tag-cloud-link tag-link-36 tag-link-position-4" style="font-size: 16.773333333333pt;" aria-label="apache (8 items)">apache</a>
+<a href="https://www.shellhacks.com/tag/archive/" class="tag-cloud-link tag-link-100 tag-link-position-5" style="font-size: 12.106666666667pt;" aria-label="archive (4 items)">archive</a>
+<a href="https://www.shellhacks.com/tag/bash/" class="tag-cloud-link tag-link-55 tag-link-position-6" style="font-size: 19.76pt;" aria-label="bash (12 items)">bash</a>
+<a href="https://www.shellhacks.com/tag/boot/" class="tag-cloud-link tag-link-232 tag-link-position-7" style="font-size: 12.106666666667pt;" aria-label="boot (4 items)">boot</a>
+<a href="https://www.shellhacks.com/tag/cisco/" class="tag-cloud-link tag-link-136 tag-link-position-8" style="font-size: 10.24pt;" aria-label="cisco (3 items)">cisco</a>
+<a href="https://www.shellhacks.com/tag/command-line/" class="tag-cloud-link tag-link-252 tag-link-position-9" style="font-size: 12.106666666667pt;" aria-label="command-line (4 items)">command-line</a>
+<a href="https://www.shellhacks.com/tag/curl/" class="tag-cloud-link tag-link-157 tag-link-position-10" style="font-size: 10.24pt;" aria-label="curl (3 items)">curl</a>
+<a href="https://www.shellhacks.com/tag/dns/" class="tag-cloud-link tag-link-134 tag-link-position-11" style="font-size: 16.773333333333pt;" aria-label="dns (8 items)">dns</a>
+<a href="https://www.shellhacks.com/tag/docker/" class="tag-cloud-link tag-link-263 tag-link-position-12" style="font-size: 22pt;" aria-label="docker (16 items)">docker</a>
+<a href="https://www.shellhacks.com/tag/encoding/" class="tag-cloud-link tag-link-59 tag-link-position-13" style="font-size: 8pt;" aria-label="encoding (2 items)">encoding</a>
+<a href="https://www.shellhacks.com/tag/encryption/" class="tag-cloud-link tag-link-28 tag-link-position-14" style="font-size: 10.24pt;" aria-label="encryption (3 items)">encryption</a>
+<a href="https://www.shellhacks.com/tag/ftp/" class="tag-cloud-link tag-link-170 tag-link-position-15" style="font-size: 10.24pt;" aria-label="ftp (3 items)">ftp</a>
+<a href="https://www.shellhacks.com/tag/git/" class="tag-cloud-link tag-link-30 tag-link-position-16" style="font-size: 17.706666666667pt;" aria-label="git (9 items)">git</a>
+<a href="https://www.shellhacks.com/tag/history/" class="tag-cloud-link tag-link-244 tag-link-position-17" style="font-size: 10.24pt;" aria-label="history (3 items)">history</a>
+<a href="https://www.shellhacks.com/tag/iso/" class="tag-cloud-link tag-link-109 tag-link-position-18" style="font-size: 8pt;" aria-label="iso (2 items)">iso</a>
+<a href="https://www.shellhacks.com/tag/john-the-ripper/" class="tag-cloud-link tag-link-68 tag-link-position-19" style="font-size: 8pt;" aria-label="john-the-ripper (2 items)">john-the-ripper</a>
+<a href="https://www.shellhacks.com/tag/mail/" class="tag-cloud-link tag-link-85 tag-link-position-20" style="font-size: 12.106666666667pt;" aria-label="mail (4 items)">mail</a>
+<a href="https://www.shellhacks.com/tag/mod-wsgi/" class="tag-cloud-link tag-link-37 tag-link-position-21" style="font-size: 8pt;" aria-label="mod-wsgi (2 items)">mod-wsgi</a>
+<a href="https://www.shellhacks.com/tag/monitoring/" class="tag-cloud-link tag-link-123 tag-link-position-22" style="font-size: 10.24pt;" aria-label="monitoring (3 items)">monitoring</a>
+<a href="https://www.shellhacks.com/tag/mount/" class="tag-cloud-link tag-link-110 tag-link-position-23" style="font-size: 10.24pt;" aria-label="mount (3 items)">mount</a>
+<a href="https://www.shellhacks.com/tag/mysql/" class="tag-cloud-link tag-link-164 tag-link-position-24" style="font-size: 20.506666666667pt;" aria-label="mysql (13 items)">mysql</a>
+<a href="https://www.shellhacks.com/tag/network/" class="tag-cloud-link tag-link-39 tag-link-position-25" style="font-size: 13.6pt;" aria-label="network (5 items)">network</a>
+<a href="https://www.shellhacks.com/tag/nmap/" class="tag-cloud-link tag-link-64 tag-link-position-26" style="font-size: 10.24pt;" aria-label="nmap (3 items)">nmap</a>
+<a href="https://www.shellhacks.com/tag/openssl/" class="tag-cloud-link tag-link-61 tag-link-position-27" style="font-size: 18.453333333333pt;" aria-label="openssl (10 items)">openssl</a>
+<a href="https://www.shellhacks.com/tag/password/" class="tag-cloud-link tag-link-25 tag-link-position-28" style="font-size: 10.24pt;" aria-label="password (3 items)">password</a>
+<a href="https://www.shellhacks.com/tag/pdf/" class="tag-cloud-link tag-link-32 tag-link-position-29" style="font-size: 10.24pt;" aria-label="pdf (3 items)">pdf</a>
+<a href="https://www.shellhacks.com/tag/performance/" class="tag-cloud-link tag-link-70 tag-link-position-30" style="font-size: 10.24pt;" aria-label="performance (3 items)">performance</a>
+<a href="https://www.shellhacks.com/tag/prometheus/" class="tag-cloud-link tag-link-270 tag-link-position-31" style="font-size: 12.106666666667pt;" aria-label="prometheus (4 items)">prometheus</a>
+<a href="https://www.shellhacks.com/tag/proxy/" class="tag-cloud-link tag-link-103 tag-link-position-32" style="font-size: 10.24pt;" aria-label="proxy (3 items)">proxy</a>
+<a href="https://www.shellhacks.com/tag/python/" class="tag-cloud-link tag-link-24 tag-link-position-33" style="font-size: 12.106666666667pt;" aria-label="python (4 items)">python</a>
+<a href="https://www.shellhacks.com/tag/redis/" class="tag-cloud-link tag-link-268 tag-link-position-34" style="font-size: 10.24pt;" aria-label="redis (3 items)">redis</a>
+<a href="https://www.shellhacks.com/tag/regex/" class="tag-cloud-link tag-link-91 tag-link-position-35" style="font-size: 8pt;" aria-label="regex (2 items)">regex</a>
+<a href="https://www.shellhacks.com/tag/repository/" class="tag-cloud-link tag-link-180 tag-link-position-36" style="font-size: 10.24pt;" aria-label="repository (3 items)">repository</a>
+<a href="https://www.shellhacks.com/tag/salt-stack/" class="tag-cloud-link tag-link-29 tag-link-position-37" style="font-size: 8pt;" aria-label="salt-stack (2 items)">salt-stack</a>
+<a href="https://www.shellhacks.com/tag/ssh/" class="tag-cloud-link tag-link-45 tag-link-position-38" style="font-size: 19.2pt;" aria-label="ssh (11 items)">ssh</a>
+<a href="https://www.shellhacks.com/tag/telnet/" class="tag-cloud-link tag-link-38 tag-link-position-39" style="font-size: 12.106666666667pt;" aria-label="telnet (4 items)">telnet</a>
+<a href="https://www.shellhacks.com/tag/text-processing/" class="tag-cloud-link tag-link-242 tag-link-position-40" style="font-size: 17.706666666667pt;" aria-label="text-processing (9 items)">text-processing</a>
+<a href="https://www.shellhacks.com/tag/tor/" class="tag-cloud-link tag-link-102 tag-link-position-41" style="font-size: 12.106666666667pt;" aria-label="tor (4 items)">tor</a>
+<a href="https://www.shellhacks.com/tag/tsm/" class="tag-cloud-link tag-link-176 tag-link-position-42" style="font-size: 13.6pt;" aria-label="tsm (5 items)">tsm</a>
+<a href="https://www.shellhacks.com/tag/wget/" class="tag-cloud-link tag-link-156 tag-link-position-43" style="font-size: 8pt;" aria-label="wget (2 items)">wget</a>
+<a href="https://www.shellhacks.com/tag/windows/" class="tag-cloud-link tag-link-173 tag-link-position-44" style="font-size: 8pt;" aria-label="windows (2 items)">windows</a>
+<a href="https://www.shellhacks.com/tag/yum/" class="tag-cloud-link tag-link-154 tag-link-position-45" style="font-size: 12.106666666667pt;" aria-label="yum (4 items)">yum</a></div>
+</aside>	</div>
+</div><!-- #secondary -->
+</div><!-- close .*-inner (main-content or sidebar, depending if sidebar is used) -->
+</div><!-- close .row -->
+</div><!-- close .container -->
+</div><!-- close .site-content -->
+<div id=footer-area>
+<footer id=colophon class=site-footer role=contentinfo>
+<div class="site-info container">
+<div class=row>
+<div class="copyright col-md-12">
+© 2011-2018 ShellHacks. All rights reserved.	</div>
+</div>
+</div><!-- .site-info -->
+<div class=scroll-to-top><i class="fa fa-angle-up"></i></div><!-- .scroll-to-top -->
+</footer><!-- #colophon -->
+</div>
+</div><!-- #page -->
+<script type="text/javascript">jQuery(document).ready(function($){if($(window).width()>=767){$('.navbar-nav > li.menu-item > a').click(function(){if($(this).attr('target')!=='_blank'){window.location=$(this).attr('href');}else{var win=window.open($(this).attr('href'),'_blank');win.focus();}});}});</script>
+<script src="https://www.shellhacks.com/wp-content,_plugins,_social-warfare,_assets,_js,_script.min.js,qver==3.3.2+wp-content,_themes,_activello,_assets,_js,_skip-link-focus-fix.js,qver==20140222+wp-includes,_js,_comment-reply.min.js,qver==4.9.8+wp-includes,_js,_wp-embed.min.js,qver==4.9.8.pagespeed.jc.pNzo1NgQaH.js"></script><script>eval(mod_pagespeed_eFQqKn4QTq);</script>
+<script>eval(mod_pagespeed_WCHn8eh1M2);</script>
+<script>eval(mod_pagespeed_LGeTxK111g);</script>
+<script>eval(mod_pagespeed_ie6DdS4kwK);</script>
+<script async=async type='text/javascript'>var ak_js=document.getElementById("ak_js");if(!ak_js){ak_js=document.createElement('input');ak_js.setAttribute('id','ak_js');ak_js.setAttribute('name','ak_js');ak_js.setAttribute('type','hidden');}else{ak_js.parentNode.removeChild(ak_js);}ak_js.setAttribute('value',(new Date()).getTime());var commentForm=document.getElementById('commentform');if(commentForm){commentForm.appendChild(ak_js);}else{var replyRowContainer=document.getElementById('replyrow');if(replyRowContainer){var children=replyRowContainer.getElementsByTagName('td');if(children.length>0){children[0].appendChild(ak_js);}}}</script>
+<script type="text/javascript">var swpFloatBeforeContent=true;var swpClickTracking=false;</script>
+<div id=cookie-notice role=banner class="cn-top wp-default" style="color: #393939; background-color: #f2f2f2;"><div class=cookie-notice-container><span id=cn-notice-text>We use cookies to ensure that we give you the best experience on our website. If you continue to use this site we will assume that you are happy with it.</span><a href="#" id=cn-accept-cookie data-cookie-set=accept class="cn-set-cookie cn-button wp-default button">Ok</a>
+</div>
+</div>
+</body>
+</html>
