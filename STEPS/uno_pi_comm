@@ -1,0 +1,29 @@
+sudo apt-get install arduino
+#wait
+
+sudo apt-get install python  # to install python, not needed each time
+
+sudo apt-get install python-serial
+#wait
+
+cd to folder with script. ls
+python ******.py
+
+
+
+
+FOR ARDUINO TO PI
+
+wget https://raw.githubusercontent.com/tbird20d/grabserial/master/grabserial grabserial
+#wait
+
+nano grabserial  #enter
+ ctrl+w #searvh for sd.baudrate   
+# set baud rate and port for arduino
+
+ctrl+x  then y to save in the right directory #name grabserial for example
+
+python grabserial >>randomefilename.txt
+#this saves the data that is sent over to a file name as above and save it
+
+
