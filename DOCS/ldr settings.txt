@@ -1,0 +1,6 @@
+Low intensity>> high resisitance in ldr, less drop across series resistor
+High intensity>>low resisitance in ldr, high drop across series resistor
+
+So we measure the voltage across the series resistor to have changes of the same sign
+
+5.1k in series... and 4.5 v across both
