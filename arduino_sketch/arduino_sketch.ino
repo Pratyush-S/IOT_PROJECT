@@ -7,6 +7,7 @@ void setup() {
   
 Serial.begin(9600);
 }
+
 void lightson(void){
   digitalWrite(4,HIGH);
   digitalWrite(5,HIGH);
@@ -44,5 +45,10 @@ else{
   lightsoff();
   Serial.println("lights off");
 }
+
+
+
+
+
 }
 
